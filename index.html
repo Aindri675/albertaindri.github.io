@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Albert Aindri — Chemical Engineering Portfolio</title>
+<meta name="description" content="Albert Aindri — chemical engineering student at South Dakota Mines, focused on energy, petroleum, and mineral refining.">
+<meta property="og:title" content="Albert Aindri — Chemical Engineering Portfolio">
+<meta property="og:description" content="Chemical engineering student at South Dakota Mines, focused on energy, petroleum, and mineral refining.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230E1B24'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='15' font-weight='700' fill='%23E2883D' text-anchor='middle'%3EAA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root{
+    --ink:      #0E1B24;   /* base background */
+    --panel:    #14262F;   /* section panel */
+    --panel-2:  #182C36;   /* alt panel */
+    --line:     #2B4048;   /* hairline rules */
+    --paper:    #ECE9E1;   /* primary text / "paper" */
+    --paper-60: rgba(236,233,225,0.62);
+    --paper-35: rgba(236,233,225,0.35);
+    --amber:    #E2883D;   /* flame / primary accent */
+    --teal:     #5FB8AC;   /* flow / secondary accent */
+    --amber-dim: rgba(226,136,61,0.14);
+    --teal-dim:  rgba(95,184,172,0.14);
+
+    --display: 'Space Grotesk', sans-serif;
+    --body:    'IBM Plex Sans', sans-serif;
+    --mono:    'IBM Plex Mono', monospace;
+
+    --rail-w: 260px;
+    --maxw: 760px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--amber); color:var(--ink); }
+
+  a{ color:var(--teal); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:3px;
+  }
+
+  h1,h2,h3{
+    font-family:var(--display);
+    font-weight:600;
+    margin:0;
+    color:var(--paper);
+    letter-spacing:-0.01em;
+  }
+
+  .tag{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.02em;
+    color:var(--teal);
+  }
+
+  /* ============================================================
+     BACKGROUND — faint process-grid
+     ============================================================ */
+  .grid-bg{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.18;
+    mask-image:linear-gradient(to bottom, black, black 40%, transparent 92%);
+  }
+
+  /* ============================================================
+     LAYOUT — left instrumentation rail + content column
+     ============================================================ */
+  .frame{
+    position:relative; z-index:1;
+    display:flex;
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  .rail{
+    width:var(--rail-w);
+    flex-shrink:0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    padding:40px 20px 40px 32px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+
+  .rail-top .initials{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:20px;
+    color:var(--paper);
+  }
+  .rail-top .role{
+    margin-top:6px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--paper-60);
+    line-height:1.5;
+  }
+
+  .pipeline{
+    position:relative;
+    margin-top:36px;
+    padding-left:22px;
+  }
+  .pipeline::before{
+    content:"";
+    position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(to bottom, var(--teal), var(--line) 90%);
+    opacity:0.5;
+  }
+  .pipeline li{ list-style:none; margin:0 0 18px; }
+  .pipeline a{
+    position:relative;
+    display:block;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--paper-60);
+    text-decoration:none;
+    transition:color .15s ease;
+  }
+  .pipeline a:hover{ color:var(--paper); text-decoration:none; }
+  .pipeline a::before{
+    content:"";
+    position:absolute; left:-22px; top:5px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--ink);
+    border:2px solid var(--line);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .pipeline a:hover::before,
+  .pipeline a.active::before{
+    border-color:var(--amber);
+    background:var(--amber);
+  }
+  .pipeline a.active{ color:var(--paper); }
+  .pipeline .code{ color:var(--teal); margin-right:8px; }
+
+  .rail-bottom{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--paper-35);
+    line-height:1.7;
+  }
+  .rail-bottom a{ color:var(--paper-35); }
+  .rail-bottom a:hover{ color:var(--teal); }
+
+  .content{
+    flex:1;
+    min-width:0;
+    padding:40px 40px 120px;
+  }
+
+  /* mobile top nav (hidden on desktop) */
+  .topnav{ display:none; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    min-height:78vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    max-width:var(--maxw);
+    animation:rise .7s ease both;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .hero .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .flow-icon{ width:34px; height:14px; flex-shrink:0; }
+  .hero h1{
+    font-size:clamp(40px, 6vw, 68px);
+    line-height:1.03;
+  }
+  .hero .lede{
+    margin-top:22px;
+    max-width:52ch;
+    font-size:18px;
+    color:var(--paper-60);
+  }
+  .hero .lede strong{ color:var(--paper); font-weight:500; }
+  .hero .cta-row{
+    margin-top:34px;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn{
+    font-family:var(--mono);
+    font-size:13px;
+    padding:11px 18px;
+    border-radius:2px;
+    border:1px solid var(--line);
+    color:var(--paper);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn:hover{ text-decoration:none; border-color:var(--amber); background:var(--amber-dim); }
+  .btn.primary{ border-color:var(--amber); background:var(--amber-dim); color:var(--amber); }
+  .btn.primary:hover{ background:var(--amber); color:var(--ink); }
+
+  /* ============================================================
+     SECTION SHELL
+     ============================================================ */
+  section.block{
+    max-width:var(--maxw);
+    padding:76px 0 0;
+    border-top:1px solid var(--line);
+    scroll-margin-top:32px;
+  }
+  section.block:first-of-type{ border-top:none; }
+  .block-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin-bottom:28px;
+  }
+  .block-head .code{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    padding:2px 7px;
+    border-radius:2px;
+  }
+  .block-head h2{ font-size:26px; }
+
+  p{ color:var(--paper-60); margin:0 0 14px; max-width:60ch; }
+  p:last-child{ margin-bottom:0; }
+  p strong{ color:var(--paper); font-weight:500; }
+
+  /* ============================================================
+     ABOUT
+     ============================================================ */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:40px;
+    align-items:start;
+  }
+  .stat-strip{
+    display:flex; flex-direction:column; gap:18px;
+    font-family:var(--mono);
+    min-width:150px;
+  }
+  .stat-strip .stat b{
+    display:block; font-family:var(--display); font-size:26px; color:var(--amber); font-weight:600;
+  }
+  .stat-strip .stat span{ font-size:11.5px; color:var(--paper-60); }
+
+  /* ============================================================
+     EDUCATION — timeline
+     ============================================================ */
+  .timeline{ display:flex; flex-direction:column; gap:0; }
+  .tl-item{
+    position:relative;
+    padding:0 0 32px 26px;
+    border-left:1px solid var(--line);
+  }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:"";
+    position:absolute; left:-5px; top:4px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--ink); border:2px solid var(--teal);
+  }
+  .tl-item .when{ font-family:var(--mono); font-size:12px; color:var(--teal); }
+  .tl-item h3{ font-size:18px; margin-top:6px; }
+  .tl-item .where{ font-size:13.5px; color:var(--paper-60); margin-top:2px; }
+  .tl-item p{ margin-top:10px; }
+
+  /* ============================================================
+     PROJECTS — operation cards
+     ============================================================ */
+  .proj-list{ display:flex; flex-direction:column; }
+  .proj{
+    padding:26px 0;
+    border-top:1px solid var(--line);
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:20px;
+  }
+  .proj:first-child{ border-top:none; padding-top:0; }
+  .proj .unit{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--paper-35);
+    padding-top:3px;
+  }
+  .proj h3{ font-size:18px; margin-bottom:8px; }
+  .proj .meta{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin-top:14px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    background:var(--teal-dim);
+    padding:3px 8px;
+    border-radius:2px;
+  }
+
+  /* ============================================================
+     RESEARCH INTERESTS
+     ============================================================ */
+  .interest-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .interest{
+    background:var(--ink);
+    padding:22px;
+  }
+  .interest .code{ font-family:var(--mono); font-size:11px; color:var(--paper-35); }
+  .interest h3{ font-size:16px; margin:8px 0 8px; }
+  .interest p{ font-size:14.5px; }
+
+  /* ============================================================
+     SKILLS — instrument panel
+     ============================================================ */
+  .skill-group{ margin-bottom:26px; }
+  .skill-group:last-child{ margin-bottom:0; }
+  .skill-group .label{
+    font-family:var(--mono); font-size:11.5px; color:var(--paper-35);
+    margin-bottom:10px;
+  }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-tags .chip{ color:var(--paper); border-color:var(--line); background:var(--panel); }
+
+  /* ============================================================
+     CERTIFICATIONS
+     ============================================================ */
+  .cert-list{ display:flex; flex-direction:column; }
+  .cert{
+    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+  }
+  .cert:first-child{ border-top:none; padding-top:0; }
+  .cert .name{ color:var(--paper); font-weight:500; }
+  .cert .issuer{ font-size:13.5px; color:var(--paper-60); margin-top:2px; }
+  .cert .when{ font-family:var(--mono); font-size:12px; color:var(--teal); white-space:nowrap; }
+
+  /* ============================================================
+     LEADERSHIP
+     ============================================================ */
+  .lead-item{ padding:22px 0; border-top:1px solid var(--line); }
+  .lead-item:first-child{ border-top:none; padding-top:0; }
+  .lead-item .when{ font-family:var(--mono); font-size:12px; color:var(--teal); }
+  .lead-item h3{ font-size:17px; margin-top:6px; }
+
+  /* ============================================================
+     RESUME
+     ============================================================ */
+  .resume-box{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:20px;
+    padding:26px 28px;
+    border:1px solid var(--line);
+    background:var(--panel);
+  }
+  .resume-box .fname{ font-family:var(--mono); font-size:13px; color:var(--paper-60); margin-top:6px; }
+
+  /* ============================================================
+     CONTACT
+     ============================================================ */
+  .contact-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;
+    margin-top:8px;
+  }
+  .contact-item{
+    padding:18px 20px;
+    border:1px solid var(--line);
+    transition:border-color .15s ease;
+  }
+  .contact-item:hover{ border-color:var(--teal); }
+  .contact-item .label{ font-family:var(--mono); font-size:11px; color:var(--paper-35); }
+  .contact-item .value{ margin-top:6px; font-size:15px; color:var(--paper); }
+
+  footer{
+    max-width:var(--maxw);
+    padding:60px 0 20px;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--paper-35);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 880px){
+    .rail{ display:none; }
+    .topnav{
+      display:flex;
+      position:sticky; top:0; z-index:5;
+      background:rgba(14,27,36,0.92);
+      backdrop-filter:blur(6px);
+      border-bottom:1px solid var(--line);
+      padding:14px 20px;
+      gap:16px;
+      overflow-x:auto;
+      font-family:var(--mono);
+      font-size:12px;
+    }
+    .topnav a{ color:var(--paper-60); white-space:nowrap; flex-shrink:0; }
+    .topnav a:hover{ color:var(--amber); text-decoration:none; }
+    .content{ padding:28px 22px 100px; }
+    .about-grid{ grid-template-columns:1fr; }
+    .stat-strip{ flex-direction:row; flex-wrap:wrap; }
+    .interest-grid{ grid-template-columns:1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+    .proj{ grid-template-columns:1fr; }
+    .resume-box{ flex-direction:column; align-items:flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .hero{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<nav class="topnav" aria-label="Section navigation">
+  <a href="#about">About</a>
+  <a href="#education">Education</a>
+  <a href="#research">Research</a>
+  <a href="#experience">Experience</a>
+  <a href="#skills">Skills</a>
+  <a href="#certifications">Certs</a>
+  <a href="#resume">Resume</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<div class="frame">
+
+  <!-- ============================================================
+       LEFT RAIL — sticky navigation styled as an instrumentation line
+       ============================================================ -->
+  <aside class="rail" aria-label="Primary navigation">
+    <div class="rail-top">
+      <div class="initials">Albert Aindri</div>
+      <div class="role">Chemical Engineering<br>Energy &amp; Refining</div>
+
+      <ul class="pipeline" id="pipeline">
+        <li><a href="#about"><span class="code">01</span>About</a></li>
+        <li><a href="#education"><span class="code">02</span>Education</a></li>
+        <li><a href="#research"><span class="code">03</span>Research interests</a></li>
+        <li><a href="#experience"><span class="code">04</span>Research experience</a></li>
+        <li><a href="#skills"><span class="code">05</span>Technical skills</a></li>
+        <li><a href="#certifications"><span class="code">06</span>Certifications</a></li>
+        <li><a href="#resume"><span class="code">07</span>Resume</a></li>
+        <li><a href="#contact"><span class="code">08</span>Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="rail-bottom">
+      Rapid City, SD · Class of 2030<br>
+      <a href="mailto:aindripomol@gmail.com">aindripomol@gmail.com</a>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       CONTENT
+       ============================================================ -->
+  <main class="content">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="eyebrow">
+        <svg class="flow-icon" viewBox="0 0 34 14" fill="none" aria-hidden="true">
+          <line x1="0" y1="7" x2="34" y2="7" stroke="#5FB8AC" stroke-width="1.5"/>
+          <circle cx="7" cy="7" r="4" fill="#0E1B24" stroke="#5FB8AC" stroke-width="1.5"/>
+          <circle cx="27" cy="7" r="4" fill="#0E1B24" stroke="#E2883D" stroke-width="1.5"/>
+        </svg>
+        <span class="tag">CHE · CLASS OF 2030 · REV. 2026</span>
+      </div>
+      <h1>Albert Aindri</h1>
+      <p class="lede">
+        I'm a chemical engineering student working toward a career in
+        <strong>energy, petroleum, and mineral refining</strong> — combining hands-on technical
+        training with a track record of leadership and organization-building.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="#education">See my path</a>
+        <a class="btn" href="#resume">Download resume</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="block" id="about">
+      <div class="block-head"><span class="code">01</span><h2>About</h2></div>
+      <p>
+        I'm a chemical engineering student at the South Dakota School of Mines and Technology, selected
+        as one of the top 30 STEM scholars nationally from Papua New Guinea to study in the U.S. My focus
+        is on <strong>energy systems, petroleum processing, and mining/mineral refining</strong> — the parts
+        of chemical engineering that turn raw resources into usable fuels and materials.
+      </p>
+      <p>
+        I'm multilingual (English and Tok Pisin) and bring an initiative-driven approach to
+        problem-solving, shaped by leadership programs like <strong>Kectil</strong> and
+        <strong>Aspire Leaders</strong> alongside my coursework.
+      </p>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="block" id="education">
+      <div class="block-head"><span class="code">02</span><h2>Education</h2></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="when">2026 — 2030 (expected)</div>
+          <h3>B.S. in Chemical Engineering</h3>
+          <div class="where">South Dakota School of Mines and Technology — Rapid City, SD</div>
+          <p>Coursework and focus areas oriented toward energy, petroleum, and mineral processing.</p>
+        </div>
+        <div class="tl-item">
+          <div class="when">2025 (one semester)</div>
+          <h3>B.S. Program (withdrew)</h3>
+          <div class="where">University of Papua New Guinea — Port Moresby, PNG</div>
+          <p>Completed one semester before withdrawing to accept the scholarship to South Dakota Mines.</p>
+        </div>
+        <div class="tl-item">
+          <div class="when">Class of 2025</div>
+          <h3>Grade 12 Certificate in Science; Diploma of STEM Education</h3>
+          <div class="where">Sogeri National School of Excellence — Sogeri, PNG</div>
+          <p>Completed a dual curriculum — the Papua New Guinea National Grade 12 program and a Diploma
+             of STEM Education — simultaneously.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH INTERESTS -->
+    <section class="block" id="research">
+      <div class="block-head"><span class="code">03</span><h2>Research interests</h2></div>
+      <div class="interest-grid">
+        <div class="interest">
+          <div class="code">01</div>
+          <h3>Petroleum refining &amp; processing</h3>
+          <p>The chemistry and engineering behind converting crude resources into usable fuels.</p>
+        </div>
+        <div class="interest">
+          <div class="code">02</div>
+          <h3>Energy systems</h3>
+          <p>Process design for efficient, scalable energy production.</p>
+        </div>
+        <div class="interest">
+          <div class="code">03</div>
+          <h3>Mining &amp; mineral refining</h3>
+          <p>Extraction and purification processes for raw materials.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH EXPERIENCE -->
+    <section class="block" id="experience">
+      <div class="block-head"><span class="code">04</span><h2>Research experience</h2></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="when">2026 — Present</div>
+          <h3>Undergraduate Researcher</h3>
+          <div class="where">Research with Dr. Shende — South Dakota School of Mines and Technology</div>
+          <p>Working with Dr. Shende's research group in chemical engineering, gaining hands-on
+             experience in the lab and in how research projects are planned, run, and documented.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNICAL SKILLS -->
+    <section class="block" id="skills">
+      <div class="block-head"><span class="code">05</span><h2>Technical skills</h2></div>
+
+      <div class="skill-group">
+        <div class="label">PROCESS &amp; SIMULATION</div>
+        <div class="skill-tags">
+          <span class="chip">Aspen</span>
+          <span class="chip">Viso</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">PROGRAMMING &amp; DATA</div>
+        <div class="skill-tags">
+          <span class="chip">Python</span>
+          <span class="chip">Excel</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">LAB &amp; EXPERIMENTAL</div>
+        <div class="skill-tags">
+          <span class="chip">GC / HPLC</span>
+          <span class="chip">Titration &amp; analytical chemistry</span>
+          <span class="chip">Lab safety &amp; solution preparation</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="label">DESIGN &amp; DOCUMENTATION</div>
+        <div class="skill-tags">
+          <span class="chip">P&amp;ID / PFD development</span>
+          <span class="chip">AutoCAD</span>
+          <span class="chip">Technical writing</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section class="block" id="certifications">
+      <div class="block-head"><span class="code">06</span><h2>Certifications and Awards</h2></div>
+      <div class="cert-list">
+        <div class="cert">
+          <div>
+            <div class="name">Kectil Youth Leadership Program</div>
+            <div class="issuer">Certificate of Completion</div>
+          </div>
+          <div class="when">2025 — 2026</div>
+        </div>
+        <div class="cert">
+          <div>
+            <div class="name">Aspire Leaders Program</div>
+            <div class="issuer">Aspire Institute — 6‑month program</div>
+          </div>
+          <div class="when">Early 2026</div>
+        </div>
+        <div class="cert">
+          <div>
+            <div class="name">Certificate of Implementation of Biological Weapons</div>
+            <div class="issuer">UN Workshop</div>
+          </div>
+          <div class="when"></div>
+        </div>
+        <div class="cert">
+          <div>
+            <div class="name">Academic Excellence Award, 3rd Place in STEM</div>
+            <div class="issuer">Sogeri National School of Excellence</div>
+          </div>
+          <div class="when"></div>
+        </div>
+        <div class="cert">
+          <div>
+            <div class="name">PNG Government STEM Scholar</div>
+            <div class="issuer">Top 30 nationally — selected to study STEM in the U.S.</div>
+          </div>
+          <div class="when"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section class="block" id="resume">
+      <div class="block-head"><span class="code">07</span><h2>Resume</h2></div>
+      <div class="resume-box">
+        <div>
+          <h3 style="font-size:17px;">Full resume, PDF</h3>
+          <div class="fname">Aindri_Albert_Resume.pdf</div>
+        </div>
+        <a class="btn primary" href="resume.pdf" download>Download PDF</a>
+      </div>
+      <p style="margin-top:16px; font-size:13.5px;">
+        Add <code>resume.pdf</code> to the project folder next to <code>index.html</code> so this link works —
+        see the README for instructions.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="block" id="contact">
+      <div class="block-head"><span class="code">08</span><h2>Contact</h2></div>
+      <p>Best way to reach me is email — I'm also happy to connect on LinkedIn.</p>
+      <div class="contact-grid">
+        <a class="contact-item" href="mailto:aindripomol@gmail.com">
+          <div class="label">EMAIL</div>
+          <div class="value">aindripomol@gmail.com</div>
+        </a>
+        <a class="contact-item" href="https://www.linkedin.com/in/albert-aindri-bbb997407/" target="_blank" rel="noopener">
+          <div class="label">LINKEDIN</div>
+          <div class="value">linkedin.com/in/albert-aindri</div>
+        </a>
+        <a class="contact-item" href="tel:+16058382243">
+          <div class="label">PHONE</div>
+          <div class="value">+1 605 838 2243</div>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      Built by Albert Aindri · Last updated <span id="year"></span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Highlight active section in the left rail as the page scrolls
+  const links = document.querySelectorAll('.pipeline a');
+  const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href')));
+
+  const setActive = () => {
+    let current = sections[0];
+    const y = window.scrollY + 140;
+    sections.forEach(sec => { if (sec && sec.offsetTop <= y) current = sec; });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+  };
+  document.addEventListener('scroll', setActive, { passive:true });
+  setActive();
+</script>
+
+</body>
+</html>
